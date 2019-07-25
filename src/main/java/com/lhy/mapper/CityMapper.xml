@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="com.lhy.mapper.CityMapper">
+ 	
+ 	<resultMap type="com.lhy.entity.City" id="CityMap">
+ 		<id column="sid" property="sid"></id>
+ 		<result column="sname" property="sname"/>
+ 		 <association property="sheng" javaType="com.lhy.entity.Sheng">
+ 			<id column="id" property="id"/>
+ 			<result column="name" property="name"/>
+ 		</association>
+ 	</resultMap> 
+ 	
+ 	<select id="findAll" resultMap="CityMap">
+	 		SELECT
+		c.sid,
+		c.sname,
+		s.id,
+		s.NAME 
+	        FROM
+		t_city c
+		LEFT JOIN t_sheng s ON c.id = s.id
+ 	</select>
+ 	
+ 	<select id="shengFind" resultType="com.lhy.entity.Sheng">
+ 		select * from t_sheng
+ 	</select>
+ 	
+ 	<insert id="add">
+ 		insert into t_city(sname,id) values(#{sname},#{sheng.id})
+ 	</insert>
+ 	
+ 	<delete id="del">
+ 		delete from t_city where sid =#{sid}
+ 	</delete>
+ 	
+ 	<select id="toupdate" resultType="com.lhy.entity.City">
+ 		select * from t_city c where c.sid = #{sid}
+ 	</select>
+ 	
+ 	<update id="update">
+ 		update t_city set sname=#{sname},id=#{id} where sid = #{sid}
+ 	</update>
+</mapper>
